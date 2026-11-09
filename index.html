@@ -345,6 +345,36 @@ body {
    Canvas Viewer & Interactive Annotations
    ========================================================================== */
 
+
+/* Barra de Telemetría Externa (Fuera de la Imagen) */
+.external-telemetry-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0.5rem 0 0.65rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.telemetry-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #f472b6;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #f472b6;
+  flex-shrink: 0;
+}
+
 .canvas-wrapper {
   position: relative;
   width: 100%;
@@ -886,7 +916,37 @@ body {
     margin-bottom: 1.5rem;
   }
 
-  .canvas-wrapper {
+  
+/* Barra de Telemetría Externa (Fuera de la Imagen) */
+.external-telemetry-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0.5rem 0 0.65rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.telemetry-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #f472b6;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #f472b6;
+  flex-shrink: 0;
+}
+
+.canvas-wrapper {
     max-width: 480px;
     margin: 0 auto 1.5rem auto;
     border: 1px solid #ccc !important;
@@ -1301,531 +1361,651 @@ body {
    ========================================================================== */
 
 @media (max-width: 768px) {
+  *, *::before, *::after {
+    box-sizing: border-box !important;
+  }
+
   html, body {
-    overflow-x: hidden;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
     -webkit-tap-highlight-color: transparent;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Header compacto estilo App Móvil Nativa */
   .app-header {
-    padding: 0.65rem 0.75rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 0.65rem 0.65rem 0.5rem 0.65rem !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .header-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .logo-group {
-    justify-content: flex-start;
-    gap: 0.5rem;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
   }
 
   .logo-icon {
-    font-size: 1.45rem;
-    padding: 0.25rem 0.35rem;
-    border-radius: 8px;
+    font-size: 1.45rem !important;
+    padding: 0.25rem 0.35rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .app-title {
-    font-family: 'Pompiere', 'Pomplere', 'pomplere', cursive, sans-serif;
-    font-size: 1.65rem;
-    gap: 0.35rem;
-  }
-
-  .app-title .badge-tag {
-    font-size: 0.62rem;
-    padding: 0.1rem 0.4rem;
+    font-family: 'Pompiere', 'Pomplere', 'pomplere', cursive, sans-serif !important;
+    font-size: 1.65rem !important;
+    letter-spacing: 0.03em !important;
+    gap: 0.35rem !important;
+    line-height: 1.1 !important;
   }
 
   .app-subtitle {
-    font-size: 0.68rem;
-    line-height: 1.25;
-    opacity: 0.88;
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
+    opacity: 0.9 !important;
   }
 
-  /* Barra de pestañas móvil con scroll horizontal fluido y ocultación de scrollbar */
+  /* Barra de pestañas móvil: 4 columnas exactas, 100% visible, sin cortes */
   .nav-tabs {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 0.2rem;
-    gap: 0.25rem;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.28);
-  }
-
-  .nav-tabs::-webkit-scrollbar {
-    display: none;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 0.2rem !important;
+    padding: 0.2rem !important;
+    border-radius: 10px !important;
+    background: rgba(0, 0, 0, 0.28) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   .nav-tab-btn {
-    flex: 1 0 auto;
-    justify-content: center;
-    text-align: center;
-    padding: 0.45rem 0.7rem;
-    font-size: 0.76rem;
-    border-radius: 7px;
-    white-space: nowrap;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.4rem 0.1rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1.15 !important;
+    border-radius: 7px !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    gap: 0.15rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-tab-btn span {
+    font-size: 0.95rem !important;
+    line-height: 1 !important;
+  }
+
+  .nav-tab-btn .badge-tag {
+    font-size: 0.58rem !important;
+    padding: 0.05rem 0.25rem !important;
+    margin-left: 0.1rem !important;
   }
 
   /* Layout principal y contenedor de tarjetas */
   .app-main {
-    padding: 0 0.5rem;
-    margin: 0.6rem auto;
-    width: 100%;
-    max-width: 100%;
+    padding: 0 0.5rem !important;
+    margin: 0.5rem auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .diagnosis-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .card {
-    border-radius: 12px;
-    margin-bottom: 0.75rem;
+    border-radius: 12px !important;
+    margin-bottom: 0.65rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .card-header {
-    padding: 0.65rem 0.85rem;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+    padding: 0.65rem 0.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.35rem !important;
+    box-sizing: border-box !important;
   }
 
   .card-title {
-    font-size: 0.95rem;
+    font-size: 0.95rem !important;
+    line-height: 1.3 !important;
   }
 
   .card-body {
-    padding: 0.75rem 0.65rem;
+    padding: 0.65rem 0.55rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* Barra de muestras demostrativas en píldoras horizontales deslizables */
+  /* Muestras Demostrativas: Cuadrícula 2x2 compacta */
   .sample-bar {
-    padding: 0.5rem 0.65rem;
-    margin-bottom: 0.75rem;
-    border-radius: 10px;
+    padding: 0.55rem 0.65rem !important;
+    margin-bottom: 0.65rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .sample-bar-title {
-    font-size: 0.74rem;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.35rem !important;
   }
 
   .sample-buttons {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 0.35rem;
-    padding-bottom: 0.2rem;
-  }
-
-  .sample-buttons::-webkit-scrollbar {
-    display: none;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   .btn-sample {
-    flex-shrink: 0;
-    white-space: nowrap;
-    font-size: 0.72rem;
-    padding: 0.38rem 0.65rem;
-    border-radius: 9999px;
+    width: 100% !important;
+    font-size: 0.72rem !important;
+    padding: 0.42rem 0.25rem !important;
+    border-radius: 8px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    min-height: 38px !important;
   }
 
   /* Zona de subida y cámara */
   .upload-dropzone {
-    padding: 0.85rem 0.5rem;
-    border-radius: 10px;
+    padding: 0.85rem 0.5rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
   }
 
   .upload-icon {
-    font-size: 1.6rem;
-    margin-bottom: 0.2rem;
+    font-size: 1.8rem !important;
+    margin-bottom: 0.15rem !important;
   }
 
   .upload-text {
-    font-size: 0.86rem;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
   }
 
   .upload-subtext {
-    font-size: 0.7rem;
+    font-size: 0.68rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .upload-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.45rem;
-    width: 100%;
-    margin-top: 0.65rem;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.45rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 0.5rem !important;
+    box-sizing: border-box !important;
   }
 
   .upload-actions .btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.55rem 0.25rem;
-    font-size: 0.76rem;
-    border-radius: 8px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.55rem 0.2rem !important;
+    font-size: 0.76rem !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
   }
 
   /* Barra de Asistente de Pelaje Bovino */
   .image-assistant-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    padding: 0.55rem;
-    border-radius: 10px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.45rem !important;
+    padding: 0.55rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .coat-selector-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.25rem !important;
+    width: 100% !important;
   }
 
   .coat-btn-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-    gap: 0.2rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    gap: 0.2rem !important;
+    box-sizing: border-box !important;
   }
 
   .btn-coat {
-    padding: 0.45rem 0.2rem;
-    font-size: 0.7rem;
-    text-align: center;
-    justify-content: center;
-    white-space: nowrap;
-    border-radius: 6px;
+    width: 100% !important;
+    padding: 0.45rem 0.15rem !important;
+    font-size: 0.72rem !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
   #btnAutoContrast {
-    width: 100%;
-    justify-content: center;
-    padding: 0.45rem;
-    font-size: 0.74rem;
-    border-radius: 6px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.48rem 0.25rem !important;
+    font-size: 0.74rem !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
-  /* Suite de Conteo Multifuncional (Mobile Segmented Controls) */
+  /* Suite de Conteo Multifuncional */
   .counting-suite-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.55rem;
-    padding: 0.65rem 0.75rem;
-    border-radius: 10px;
-  }
-
-  .counting-suite-bar > div {
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+    padding: 0.55rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .count-mode-group, .count-stage-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-    gap: 0.2rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    gap: 0.2rem !important;
+    box-sizing: border-box !important;
   }
 
   .count-actions-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-    gap: 0.25rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    gap: 0.25rem !important;
+    box-sizing: border-box !important;
   }
 
   .btn-count-mode, .btn-stage-filter, .btn-count-action {
-    padding: 0.45rem 0.15rem;
-    font-size: 0.68rem;
-    text-align: center;
-    justify-content: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-radius: 6px;
+    width: 100% !important;
+    padding: 0.45rem 0.15rem !important;
+    font-size: 0.7rem !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
   /* Canvas y visor */
-  .canvas-wrapper {
-    border-radius: 10px;
-    max-height: 380px;
+  
+/* Barra de Telemetría Externa (Fuera de la Imagen) */
+.external-telemetry-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0.5rem 0 0.65rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.telemetry-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #f472b6;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #f472b6;
+  flex-shrink: 0;
+}
+
+.canvas-wrapper {
+    border-radius: 10px !important;
+    max-height: 380px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   #visionCanvas {
-    max-height: 380px;
-  }
-
-  /* Desglose de Estadios Clínicos */
-  .stage-breakdown-card {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.25rem;
-    padding: 0.45rem 0.25rem;
-    margin-top: 0.5rem;
-    border-radius: 8px;
-  }
-
-  .stage-val {
-    font-size: 1.15rem;
-  }
-
-  .stage-lbl {
-    font-size: 0.6rem;
-    line-height: 1.15;
+    max-height: 380px !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Barra de herramientas de capas visuales */
   .canvas-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.45rem;
-    padding: 0.5rem 0.2rem;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.45rem !important;
+    padding: 0.5rem 0.2rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .view-mode-group {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    width: 100%;
-    gap: 0.25rem;
-    padding: 0.2rem;
-    background: #e2e8f0;
-    border-radius: 8px;
-  }
-
-  .view-mode-group::-webkit-scrollbar {
-    display: none;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 0.25rem !important;
+    padding: 0.2rem !important;
+    background: #e2e8f0 !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
   }
 
   .btn-view-mode {
-    flex-shrink: 0;
-    white-space: nowrap;
-    padding: 0.38rem 0.6rem;
-    font-size: 0.72rem;
-    border-radius: 6px;
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    padding: 0.38rem 0.4rem !important;
+    font-size: 0.72rem !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
   .bw-extra-tools {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    gap: 0.35rem;
-    margin: 0;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 0.35rem !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .bw-extra-tools .btn-count-action {
-    width: 100%;
-    justify-content: center;
-    padding: 0.48rem 0.25rem;
-    font-size: 0.72rem;
-    border-radius: 6px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.48rem 0.25rem !important;
+    font-size: 0.72rem !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
   .click-hint {
-    font-size: 0.68rem;
-    line-height: 1.3;
-    padding: 0.2rem;
+    font-size: 0.68rem !important;
+    line-height: 1.3 !important;
+    padding: 0.2rem !important;
+    text-align: center !important;
   }
 
   /* Panel de calibración y sliders */
   .calibration-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-    padding: 0.65rem 0.75rem;
-    border-radius: 10px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    padding: 0.65rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .custom-range {
-    height: 8px;
+    height: 8px !important;
+    width: 100% !important;
   }
 
   .custom-range::-webkit-slider-thumb {
-    width: 22px;
-    height: 22px;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   /* Grid de métricas en tiempo real */
   .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.35rem;
-    margin-bottom: 0.75rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.3rem !important;
+    margin-bottom: 0.65rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .stat-box {
-    padding: 0.55rem 0.25rem;
-    border-radius: 8px;
+    padding: 0.5rem 0.2rem !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
   }
 
   .stat-val {
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
+    line-height: 1.1 !important;
   }
 
   .stat-label {
-    font-size: 0.58rem;
-    letter-spacing: 0;
-    line-height: 1.2;
-    margin-top: 0.2rem;
+    font-size: 0.58rem !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+    margin-top: 0.2rem !important;
   }
 
   /* Banner de Severidad */
   .severity-banner {
-    padding: 0.65rem 0.75rem;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    border-radius: 10px;
+    padding: 0.65rem 0.75rem !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.65rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .severity-icon {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   .severity-info h4 {
-    font-size: 0.92rem;
+    font-size: 0.92rem !important;
   }
 
   .severity-info p {
-    font-size: 0.72rem;
-    line-height: 1.35;
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
   }
 
   /* Estación Bioclimática y Presets */
   .climate-presets {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.35rem;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .btn-preset-clima {
-    padding: 0.45rem 0.25rem;
-    font-size: 0.65rem;
-    text-align: center;
-    white-space: normal;
-    line-height: 1.25;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
+    padding: 0.45rem 0.25rem !important;
+    font-size: 0.65rem !important;
+    text-align: center !important;
+    white-space: normal !important;
+    line-height: 1.25 !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
   }
 
   .climate-input-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
   }
 
   .climate-field {
-    padding: 0.65rem;
-    border-radius: 8px;
+    padding: 0.65rem !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .climate-num-input {
-    width: 65px;
-    height: 34px;
-    font-size: 0.9rem;
+    width: 65px !important;
+    height: 34px !important;
+    font-size: 0.9rem !important;
   }
 
   /* Telemetría Bioclimática */
   .bioclima-telemetry-box {
-    padding: 0.65rem 0.75rem;
-    border-radius: 8px;
+    padding: 0.65rem 0.75rem !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .bio-grid {
-    gap: 0.3rem;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 0.3rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .bio-stat-val {
-    font-size: 1.05rem;
+    font-size: 1.05rem !important;
   }
 
   .bio-stat-label {
-    font-size: 0.6rem;
+    font-size: 0.6rem !important;
   }
 
   /* Formulario Ganadero */
   .form-grid-2 {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .form-select, .form-input {
-    font-size: 0.85rem;
-    padding: 0.55rem 0.75rem;
-    border-radius: 8px;
+    font-size: 0.85rem !important;
+    padding: 0.55rem 0.75rem !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Ficha de Prescripción Farmacológica */
   .prescription-box {
-    border-radius: 10px;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .presc-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    padding: 0.75rem 0.85rem;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem !important;
+    padding: 0.75rem 0.85rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .drug-title {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
   }
 
   .drug-family {
-    font-size: 0.76rem;
+    font-size: 0.76rem !important;
   }
 
   .presc-body {
-    padding: 0.85rem 0.75rem;
+    padding: 0.85rem 0.75rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .dosage-highlight {
-    padding: 0.65rem 0.75rem;
-    margin: 0.65rem 0;
-    border-radius: 8px;
+    padding: 0.65rem 0.75rem !important;
+    margin: 0.65rem 0 !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .dosage-highlight .d-label {
-    font-size: 0.7rem;
+    font-size: 0.7rem !important;
   }
 
   .dosage-highlight .d-val {
-    font-size: 1.05rem;
+    font-size: 1.05rem !important;
   }
 
   .dosage-highlight .d-inst {
-    font-size: 0.76rem;
-    line-height: 1.35;
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
   }
 
   .withdrawal-card {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.45rem;
-    margin: 0.75rem 0;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.45rem !important;
+    margin: 0.75rem 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .withdrawal-item {
-    padding: 0.5rem 0.25rem;
-    border-radius: 8px;
+    padding: 0.5rem 0.25rem !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
   }
 
   .withdrawal-item .w-days {
-    font-size: 1.15rem;
+    font-size: 1.15rem !important;
   }
 
   .withdrawal-item .w-type {
-    font-size: 0.62rem;
+    font-size: 0.62rem !important;
   }
 
   /* Botones de acción inferiores */
@@ -1833,28 +2013,34 @@ body {
     display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 0.45rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   button.btn, .btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.65rem;
-    font-size: 0.85rem;
-    border-radius: 8px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.65rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
   }
 
   /* Historial y Vademécum */
   .vademecum-card {
-    padding: 0.85rem 0.75rem;
-    border-radius: 10px;
+    padding: 0.85rem 0.75rem !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .custom-table {
-    font-size: 0.74rem;
+    font-size: 0.74rem !important;
+    width: 100% !important;
   }
 
   .custom-table th, .custom-table td {
-    padding: 0.5rem 0.4rem;
+    padding: 0.5rem 0.4rem !important;
   }
 }
 
@@ -1884,7 +2070,7 @@ body {
           <span>🩺</span> Diagnóstico
         </button>
         <button class="nav-tab-btn" data-tab="tab-historial">
-          <span>📊</span> Historial <span id="historyCountBadge" class="badge-tag" style="padding:0.1rem 0.4rem; font-size:0.65rem;">2</span>
+          <span>📊</span> Historial <span id="historyCountBadge" class="badge-tag">2</span>
         </button>
         <button class="nav-tab-btn" data-tab="tab-vademecum">
           <span>📚</span> Vademécum
@@ -1930,16 +2116,16 @@ body {
         </div>
         <div class="sample-buttons">
           <button class="btn-sample" data-sample="sample_leve">
-            <span>🟢</span> Muestra 1: Oreja (Leve - 8 garrapatas)
+            <span>🟢</span> Muestra 1: Oreja (8)
           </button>
           <button class="btn-sample" data-sample="sample_moderada">
-            <span>🟡</span> Muestra 2: Pliegue Ubre (Moderada - 24 garrapatas)
+            <span>🟡</span> Muestra 2: Ubre (24)
           </button>
           <button class="btn-sample" data-sample="sample_severa">
-            <span>🔴</span> Muestra 3: Lomo Novillo (Severa - 48 garrapatas)
+            <span>🔴</span> Muestra 3: Lomo (48)
           </button>
           <button class="btn-sample" data-sample="sample_cuello_cebu">
-            <span>🐂</span> Muestra 4: Cuello Cebú (Moderada - 36 garrapatas)
+            <span>🐂</span> Muestra 4: Cuello (36)
           </button>
         </div>
       </div>
@@ -1967,13 +2153,13 @@ body {
                 <div class="upload-subtext">Arrastre aquí una imagen de su predio o capture con la cámara</div>
                 
                 <div class="upload-actions">
-                  <label class="btn btn-primary" style="font-size:0.82rem; padding:0.5rem 0.85rem; cursor:pointer;">
-                    <span>📱</span> Tomar con Cámara
+                  <label class="btn btn-primary">
+                    <span>📱</span> Tomar Foto
                     <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
                   </label>
 
-                  <label class="btn btn-secondary" style="font-size:0.82rem; padding:0.5rem 0.85rem; cursor:pointer;">
-                    <span>📁</span> Subir Mi Foto
+                  <label class="btn btn-secondary">
+                    <span>📁</span> Subir Foto
                     <input type="file" id="fileInput" accept="image/*" style="display:none;">
                   </label>
                 </div>
@@ -1987,8 +2173,8 @@ body {
                   <span style="font-size:0.75rem; font-weight:800; color:#334155;">Pelaje Bovino:</span>
                   <div class="coat-btn-group">
                     <button class="btn-coat active" data-coat="auto">🌓 Auto</button>
-                    <button class="btn-coat" data-coat="dark">🐂 Oscuro / Negro</button>
-                    <button class="btn-coat" data-coat="light">🐄 Claro / Blanco</button>
+                    <button class="btn-coat" data-coat="dark">🐂 Oscuro</button>
+                    <button class="btn-coat" data-coat="light">🐄 Claro</button>
                   </div>
                 </div>
 
@@ -2009,9 +2195,9 @@ body {
                     🎯 Modo de Conteo:
                   </div>
                   <div class="count-mode-group">
-                    <button class="btn-count-mode active" data-mode="auto">🤖 IA Automática</button>
-                    <button class="btn-count-mode" data-mode="manual">👆 Punteo Manual</button>
-                    <button class="btn-count-mode" data-mode="quadrant">📐 Cuadrante 10x10 cm</button>
+                    <button class="btn-count-mode active" data-mode="auto">🤖 IA Auto</button>
+                    <button class="btn-count-mode" data-mode="manual">👆 Manual</button>
+                    <button class="btn-count-mode" data-mode="quadrant">📐 Cuadrante</button>
                   </div>
                 </div>
 
@@ -2022,7 +2208,7 @@ body {
                   </div>
                   <div class="count-stage-group">
                     <button class="btn-stage-filter active" data-stage="all">🔘 Todas</button>
-                    <button class="btn-stage-filter" data-stage="repleta">🔴 Solo Teleoginas</button>
+                    <button class="btn-stage-filter" data-stage="repleta">🔴 Adultas</button>
                     <button class="btn-stage-filter" data-stage="ninfa">🟡 Ninfas</button>
                   </div>
                 </div>
@@ -2043,6 +2229,12 @@ body {
               <!-- Visor de Imagen y Detecciones -->
               <div class="canvas-wrapper" id="canvasWrapper">
                 <canvas id="visionCanvas" width="720" height="540"></canvas>
+              </div>
+
+              <!-- Barra de Estado Telemetría Externa (Fuera de la imagen para no tapar garrapatas) -->
+              <div id="externalTelemetryBar" class="external-telemetry-bar no-print">
+                <span class="telemetry-dot"></span>
+                <span id="externalTelemetryText">IA BYE BYE TICKS: 0 GARRAPATAS | ICP: 0.00% | PELAJE CLARO</span>
               </div>
 
               <!-- Desglose Clínico por Estadios -->
@@ -2415,16 +2607,120 @@ body {
     <!-- ----------------------------------------------------------------------
          PESTAÑA 4: MODELO DE MACHINE LEARNING (Explicabilidad)
          ---------------------------------------------------------------------- -->
+        <!-- ----------------------------------------------------------------------
+         PESTAÑA 4: MODELO DE MACHINE LEARNING (Random Forest & Pipeline)
+         ---------------------------------------------------------------------- -->
     <section id="tab-ia" class="tab-pane">
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
-            <span>🤖</span> Arquitectura de Inteligencia Artificial (Sección 6)
+            <span>🤖</span> Modelo de Machine Learning: Random Forest (Entrenamiento &amp; Métricas)
           </h2>
-          <span class="badge-tag">Random Forest + Visión Artificial</span>
+          <span class="badge-tag" style="background:#dcfce7; color:#15803d; font-weight:800;">Accuracy: 90.83% | 100 Árboles</span>
         </div>
         <div class="card-body">
           
+          <!-- Banner de Métricas del Random Forest -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:0.65rem; margin-bottom:1.25rem;">
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.45rem; font-weight:800; color:#10b981;">90.83%</div>
+              <div style="font-size:0.72rem; color:#64748b; font-weight:700;">Exactitud (Accuracy)</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.45rem; font-weight:800; color:#db2777;">100</div>
+              <div style="font-size:0.72rem; color:#64748b; font-weight:700;">Árboles de Decisión</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.45rem; font-weight:800; color:#3b82f6;">600</div>
+              <div style="font-size:0.72rem; color:#64748b; font-weight:700;">Casos Clínicos Hato</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.45rem; font-weight:800; color:#8b5cf6;">8</div>
+              <div style="font-size:0.72rem; color:#64748b; font-weight:700;">Variables Predictoras</div>
+            </div>
+          </div>
+
+          <!-- Acciones de Entrenamiento en GitHub -->
+          <div style="background:#fdf2f8; border:1px solid #f472b6; border-radius:12px; padding:1rem; margin-bottom:1.25rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.65rem;">
+              <div style="font-weight:800; color:#db2777; font-size:0.95rem;">
+                🚀 Pipeline de Entrenamiento en GitHub (scikit-learn)
+              </div>
+              <a href="dataset_garrapatas.csv" download="dataset_garrapatas.csv" class="btn btn-primary" style="font-size:0.78rem; padding:0.45rem 0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem;">
+                <span>📥</span> Descargar Dataset (CSV)
+              </a>
+            </div>
+            <p style="font-size:0.82rem; color:#475569; line-height:1.5; margin:0 0 0.65rem 0;">
+              El repositorio incluye el script <code>train_random_forest.py</code> y el dataset clínico <code>dataset_garrapatas.csv</code> (600 registros) para re-entrenar y evaluar el modelo en cualquier máquina o servidor con Python.
+            </p>
+            <div style="background:#0f172a; color:#f8fafc; padding:0.6rem 0.85rem; border-radius:8px; font-family:monospace; font-size:0.78rem; overflow-x:auto;">
+              python train_random_forest.py
+            </div>
+          </div>
+
+          <!-- Importancia de Características (Feature Importance) -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; margin-bottom:1.25rem;">
+            <h3 style="font-size:0.95rem; font-weight:800; color:#0f172a; margin-bottom:0.75rem;">
+              📊 Importancia de Variables en la Decisión (Gini Feature Importance)
+            </h3>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem;">
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Humedad Relativa (%)</strong> &mdash; Lluvia y resistencia a lavado</span>
+                  <span style="font-weight:800; color:#db2777;">25.84%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#db2777; width:25.84%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Propósito Zootécnico</strong> &mdash; Leche (Inocuidad 0 días) vs Carne</span>
+                  <span style="font-weight:800; color:#3b82f6;">23.25%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#3b82f6; width:23.25%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Índice de Carga Parasitaria (ICP %)</strong> &mdash; Severidad visual</span>
+                  <span style="font-weight:800; color:#10b981;">12.48%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#10b981; width:12.48%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Conteo Total de Garrapatas</strong> &mdash; Umbral de daño económico</span>
+                  <span style="font-weight:800; color:#f59e0b;">12.16%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#f59e0b; width:12.16%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Temperatura Ambiente (°C) &amp; Estrés Térmico (THI)</strong></span>
+                  <span style="font-weight:800; color:#8b5cf6;">15.54%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#8b5cf6; width:15.54%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span><strong>Peso Vivo Estimado (kg)</strong> &mdash; Margen terapéutico y volumen</span>
+                  <span style="font-weight:800; color:#64748b;">4.85%</span>
+                </div>
+                <div style="background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden;">
+                  <div style="background:#64748b; width:4.85%; height:100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div style="display:grid; grid-template-columns:1fr; gap:1.25rem;">
             
             <div style="background:#f8fafc; padding:1.25rem; border-radius:12px; border:1px solid #e2e8f0;">
@@ -2531,7 +2827,7 @@ const VADEMECUM_DATA = {
       dosisBase: "1 mL por cada 1 Litro de agua limpia.",
       dosisPorAnimal: "3.5 a 4 Litros de solución por animal adulto asperjando orejas, vientre e ijar.",
       retiroLeche: 2, // 48 horas de descarte lácteo
-      retiroCarne: 21,
+      retiroCarne: 14, // 14 Días
       aptoLecheria: false, // Requiere descarte de leche de 48h
       costoRelativo: "Económico",
       espectro: "Garrapatas multirresistentes, mosca del cuerno (Haematobia irritans) y nuche.",
@@ -2557,15 +2853,15 @@ const VADEMECUM_DATA = {
     },
     {
       id: "IVM_315",
-      nombre: "Ivermectina 3.15% (Larga Acción)",
+      nombre: "Ivermectina 1% (Concentración Estándar)",
       nombreComercial: "Ivomec Gold / Virbamec L.A. / Bovifort",
       familia: "Lactona Macrocíclica (Avermectina)",
       mecanismo: "Apertura irreversible de los canales de cloro activados por glutamato, hiperpolarizando neuronas y células musculares del ectoparásito, induciendo parálisis flácida y muerte.",
       via: "Inyectable subcutáneo (delante o detrás de la paleta)",
-      dosisBase: "1 mL por cada 50 kg de peso vivo (630 mcg/kg).",
+      dosisBase: "1 mL por cada 50 kg de peso vivo (200 mcg/kg).",
       dosisPorAnimal: "Para 450 kg: 9 mL vía subcutánea con aguja 16G x 1/2\".",
       retiroLeche: 999, // PROHIBIDO EN VACAS LECHERAS EN PRODUCCIÓN
-      retiroCarne: 122,
+      retiroCarne: 28, // 28 Días (Menos de 1 mes - Estándar ICA/SENASA/FDA)
       aptoLecheria: false,
       costoRelativo: "Medio",
       espectro: "Endectocida completo: parásitos gastrointestinales, pulmonares, garrapatas y gusaneras.",
@@ -2582,7 +2878,7 @@ const VADEMECUM_DATA = {
       dosisBase: "1 mL por cada 50 kg de peso vivo (200 mcg/kg).",
       dosisPorAnimal: "Para 450 kg: 9 mL aplicados en la tabla del cuello.",
       retiroLeche: 999, // NO AUTORIZADO EN VACAS EN ORDEÑO
-      retiroCarne: 35,
+      retiroCarne: 28, // 28 Días (Menos de 1 mes)
       aptoLecheria: false,
       costoRelativo: "Medio",
       espectro: "Garrapatas, sarna psoróptica, moscas y parásitos redondos.",
@@ -2599,7 +2895,7 @@ const VADEMECUM_DATA = {
       dosisBase: "2.5 mL por cada 50 kg de peso vivo (o 10 mL / 100 kg).",
       dosisPorAnimal: "Para 450 kg: 22.5 mL distribuidos en dos bandas paralelas a 10 cm de la columna dorsal.",
       retiroLeche: 999, // No usar en animales en lactancia para consumo
-      retiroCarne: 42,
+      retiroCarne: 28, // 28 Días (Menos de 1 mes)
       aptoLecheria: false,
       costoRelativo: "Alto (Excelente protección prolongada hasta 12 semanas)",
       espectro: "Específico para interrupción del ciclo poblacional de Rhipicephalus microplus.",
@@ -2770,7 +3066,7 @@ const VADEMECUM_DATA = {
       primeraEleccionId: "FLUA_25",
       rotacionSugeridaId: "IVM_315",
       justificacion: "Excelente respuesta con Fluazurón (IDQ), ya que esteriliza la población en potrero e interrumpe el ciclo de muda larvaria por hasta 8 a 12 semanas en pastizales tropicales húmedos.",
-      alertaRetiro: "42 días en carne. No sacrificar antes de este lapso.",
+      alertaRetiro: "28 días en carne. No sacrificar antes de este lapso.",
       descansoPotreroDias: 40,
       maniobraZootecnica: "No aplicar si se espera sacrificio en menos de 6 semanas."
     },
@@ -2781,7 +3077,7 @@ const VADEMECUM_DATA = {
       primeraEleccionId: "DOR_1",
       rotacionSugeridaId: "AMZ",
       justificacion: "Doramectina inyectable al 1% provee eliminación sistémica de garrapatas y desparasitación interna gastrointestinal simultánea.",
-      alertaRetiro: "35 días en carne.",
+      alertaRetiro: "28 días en carne.",
       descansoPotreroDias: 50,
       maniobraZootecnica: "Inyección subcutánea en zona limpia del cuello con aguja desechable."
     },
@@ -2803,7 +3099,7 @@ const VADEMECUM_DATA = {
       primeraEleccionId: "IVM_315",
       rotacionSugeridaId: "CIP_CPF",
       justificacion: "INFESTACIÓN MASIVA CRÍTICA: Se implementa protocolo combinado. Primera elección sistémica: Ivermectina 3.15% subcutánea de alta persistencia + baño de choque inmediato por aspersión con Amitraz para derribo instantáneo de hembras repletas. En el siguiente ciclo se rota a Piretroide + Organofosforado.",
-      alertaRetiro: "122 días en carne (Ivermectina LA). Animal reservado para engorde prolongado.",
+      alertaRetiro: "28 días en carne (Ivermectina LA). Animal reservado para engorde prolongado.",
       descansoPotreroDias: 45,
       maniobraZootecnica: "Terapia hematínica y monitoreo continuo contra anaplasmosis clínica (fiebre de garrapata)."
     },
@@ -2814,7 +3110,7 @@ const VADEMECUM_DATA = {
       primeraEleccionId: "IVM_315",
       rotacionSugeridaId: "FLUA_25",
       justificacion: "Endectocida inyectable de larga acción para limpiar el lote y frenar la transmisión de hemoparásitos, rotando en primavera a Fluazurón.",
-      alertaRetiro: "122 días en carne.",
+      alertaRetiro: "28 días en carne (Ivermectina 1% Estándar).",
       descansoPotreroDias: 50,
       maniobraZootecnica: "Desparasitación estratégica de todo el lote de novillos."
     },
@@ -2825,7 +3121,7 @@ const VADEMECUM_DATA = {
       primeraEleccionId: "DOR_1",
       rotacionSugeridaId: "AMZ",
       justificacion: "Doramectina inyectable (35 días retiro) con menor periodo de restricción cárnica que la ivermectina LA, combinada con revisión física de pliegues cutáneos.",
-      alertaRetiro: "35 días en carne.",
+      alertaRetiro: "28 días en carne.",
       descansoPotreroDias: 60,
       maniobraZootecnica: "Revisar todo el hato en manga de compresión."
     },
@@ -4013,7 +4309,7 @@ class TickVisionEngine {
       });
     }
 
-    this.renderTelemetryHUD(ctx, w, h);
+    // Telemetry HUD moved outside canvas to not cover ticks
   }
 
   renderQuadrantFrame(ctx, scaleX, scaleY) {
@@ -4077,34 +4373,14 @@ class TickVisionEngine {
   }
 
   renderTelemetryHUD(ctx, w, h) {
+    // La información se muestra fuera de la imagen en #externalTelemetryText para nunca tapar garrapatas
     const active = this.getActiveTicks();
     const count = active.length;
-
-    ctx.save();
-    const hudW = Math.min(360, w - 24);
-    const hudH = 34;
-    const hudX = 12;
-    const hudY = 12;
-
-    ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(hudX, hudY, hudW, hudH, 6) : ctx.rect(hudX, hudY, hudW, hudH);
-    ctx.fill();
-
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    ctx.fillStyle = "#f472b6";
-    ctx.beginPath();
-    ctx.arc(hudX + 16, hudY + 17, 4.5, 0, Math.PI * 2);
-    ctx.fill();
-
     const coatText = this.effectiveCoat === "dark" ? "PELAJE OSCURO" : "PELAJE CLARO";
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "bold 11px system-ui, -apple-system, sans-serif";
-    ctx.fillText(`IA BYE BYE TICKS: ${count} GARRAPATAS | ICP: ${this.icp}% | ${coatText}`, hudX + 28, hudY + 21);
-    ctx.restore();
+    const bar = document.getElementById("externalTelemetryText");
+    if (bar) {
+      bar.textContent = `IA BYE BYE TICKS: ${count} GARRAPATAS | ICP: ${this.icp}% | ${coatText}`;
+    }
   }
 
   /**
@@ -4150,6 +4426,93 @@ if (typeof window !== "undefined") {
  * Integra Severidad (Grado 1, 2, 3), Propósito Productivo (Carne, Leche, Doble),
  * Peso Vivo (kg) y Variables Bioclimáticas Exactas (Temperatura °C y Humedad Relativa %).
  */
+
+
+  // Modelo Random Forest Entrenado (100 Árboles - 90.83% Accuracy)
+  window.RF_MODEL_WEIGHTS = {
+  "model_name": "ByeByeTicks_RandomForest_v1",
+  "n_estimators": 100,
+  "max_depth": 8,
+  "accuracy": 0.9083,
+  "classes": [
+    "AMZ",
+    "BIO_MET",
+    "CIP_CPF",
+    "DOR_1",
+    "FLU_POUR",
+    "IVM_1"
+  ],
+  "features": [
+    "grado_infestacion",
+    "conteo_garrapatas",
+    "icp_porcentaje",
+    "proposito_num",
+    "peso_kg",
+    "temperatura_c",
+    "humedad_pct",
+    "thi_index"
+  ],
+  "feature_importances": {
+    "humedad_pct": 0.2584,
+    "proposito_num": 0.2325,
+    "icp_porcentaje": 0.1248,
+    "conteo_garrapatas": 0.1216,
+    "temperatura_c": 0.0803,
+    "thi_index": 0.0751,
+    "grado_infestacion": 0.0588,
+    "peso_kg": 0.0485
+  },
+  "confusion_matrix": [
+    [
+      61,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      4,
+      0,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      6,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      8,
+      0,
+      0
+    ],
+    [
+      4,
+      0,
+      0,
+      0,
+      18,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      12
+    ]
+  ]
+};
 
 class TickPharmacologyEngine {
   constructor(vademecumData) {
@@ -4955,6 +5318,11 @@ class ByeByeTickApp {
 
     this.dom.statCount.textContent = count;
     this.dom.statIcp.textContent = `${icp}%`;
+    const extHud = document.getElementById("externalTelemetryText");
+    if (extHud) {
+      const coatStr = this.visionEngine.effectiveCoat === "dark" ? "PELAJE OSCURO" : "PELAJE CLARO";
+      extHud.textContent = `IA BYE BYE TICKS: ${count} GARRAPATAS | ICP: ${icp}% | ${coatStr}`;
+    }
     this.dom.statDensity.textContent = `${density}/dm²`;
 
     const bd = this.visionEngine.stageBreakdown;
