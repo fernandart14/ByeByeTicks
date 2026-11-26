@@ -2465,7 +2465,23 @@ body {
                 </div>
               </div>
 
-              <div class="canvas-wrapper" style="margin-top:0.75rem;">
+              <div class="vision-engine-bar no-print" style="margin-top:0.75rem; margin-bottom:0.45rem;">
+                <div class="engine-selector-group">
+                  <span style="font-size:0.75rem; font-weight:800; color:#831843;">🧠 Motor:</span>
+                  <div class="engine-btn-group">
+                    <button class="btn-vision-engine active" data-engine="morph_v5">🎯 Contornos IA</button>
+                    <button class="btn-vision-engine" data-engine="yolo26_seg">🚀 YOLO26-Seg</button>
+                  </div>
+                </div>
+                <div class="engine-model-loader">
+                  <span id="simpleYoloStatusBadge" class="badge-tag" style="background:#f1f5f9; color:#475569; font-size:0.68rem;">YOLO26: Sin .onnx</span>
+                  <label for="yoloModelInput" class="btn-count-action" style="cursor:pointer; width:auto;" title="Guardar modelo .onnx en el navegador">
+                    <span>📦</span> .onnx
+                  </label>
+                </div>
+              </div>
+
+              <div class="canvas-wrapper" style="margin-top:0.4rem;">
                 <canvas id="simpleCanvas" width="720" height="540"></canvas>
               </div>
 
@@ -4289,6 +4305,62 @@ class YOLO26SegRunner {
     return window.ort;
   }
 
+  async saveModelToCache(buffer, name = "yolo26n-seg.onnx") {
+    try {
+      if (typeof indexedDB === "undefined") return false;
+      const copy = buffer.slice(0);
+      await new Promise((resolve, reject) => {
+        const req = indexedDB.open("byebyeticks_models_db", 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains("models")) {
+            db.createObjectStore("models", { keyPath: "id" });
+          }
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction("models", "readwrite");
+          tx.objectStore("models").put({ id: "active_onnx", name, buffer: copy, savedAt: Date.now() });
+          tx.oncomplete = () => { db.close(); resolve(true); };
+          tx.onerror = () => { db.close(); reject(tx.error); };
+        };
+        req.onerror = () => reject(req.error);
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async loadModelFromCache() {
+    try {
+      if (typeof indexedDB === "undefined") return null;
+      return await new Promise(resolve => {
+        const req = indexedDB.open("byebyeticks_models_db", 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains("models")) {
+            db.createObjectStore("models", { keyPath: "id" });
+          }
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction("models", "readonly");
+          const getReq = tx.objectStore("models").get("active_onnx");
+          getReq.onsuccess = () => {
+            const rec = getReq.result || null;
+            db.close();
+            resolve(rec && rec.buffer ? rec : null);
+          };
+          getReq.onerror = () => { db.close(); resolve(null); };
+        };
+        req.onerror = () => resolve(null);
+      });
+    } catch (e) {
+      return null;
+    }
+  }
+
   async loadFromUrl(url) {
     this.isLoading = true;
     this.status = "cargando";
@@ -4300,7 +4372,7 @@ class YOLO26SegRunner {
       }
       const buffer = await resp.arrayBuffer();
       const name = url.split("/").pop() || "yolo26n-seg.onnx";
-      return await this.loadFromArrayBuffer(buffer, name);
+      return await this.loadFromArrayBuffer(buffer, name, true);
     } catch (err) {
       this.status = "error";
       this.lastError = err.message || String(err);
@@ -4309,11 +4381,12 @@ class YOLO26SegRunner {
     }
   }
 
-  async loadFromArrayBuffer(buffer, name = "yolo26n-seg.onnx") {
+  async loadFromArrayBuffer(buffer, name = "yolo26n-seg.onnx", persistCache = true) {
     this.isLoading = true;
     this.status = "cargando";
     this.lastError = "";
     try {
+      const cacheCopy = persistCache ? buffer.slice(0) : null;
       const ort = await this.ensureOrtLoaded();
       // WASM es 100% compatible con iOS Safari, Android y Desktop; WebGL/WASM fallback seguro
       if (ort.env && ort.env.wasm) {
@@ -4326,6 +4399,9 @@ class YOLO26SegRunner {
       this.modelName = name;
       this.status = "listo";
       this.isLoading = false;
+      if (cacheCopy) {
+        this.saveModelToCache(cacheCopy, name);
+      }
       return true;
     } catch (err) {
       this.session = null;
@@ -4674,13 +4750,22 @@ class TickVisionEngine {
   }
 
   /**
-   * Intenta cargar automáticamente ./models/yolo26n-seg.onnx si existe en el servidor/GitHub
+   * Intenta cargar automáticamente desde caché local (IndexedDB) o ./models/yolo26n-seg.onnx
    */
-  async tryAutoLoadYoloModel(url = "./models/yolo26n-seg.onnx") {
+  async tryAutoLoadYoloModel(url = "./models/yolo26n-seg.onnx", activateEngine = true) {
     try {
-      await this.yoloRunner.loadFromUrl(url);
-      this.engineMode = "yolo26_seg";
-      this.activeEngineLabel = "YOLO26-Seg ONNX";
+      if (!this.yoloRunner.session) {
+        const cached = await this.yoloRunner.loadModelFromCache();
+        if (cached && cached.buffer) {
+          await this.yoloRunner.loadFromArrayBuffer(cached.buffer, cached.name || "yolo26n-seg.onnx", false);
+        } else {
+          await this.yoloRunner.loadFromUrl(url);
+        }
+      }
+      if (activateEngine) {
+        this.engineMode = "yolo26_seg";
+        this.activeEngineLabel = "YOLO26-Seg ONNX";
+      }
       return true;
     } catch (e) {
       return false;
@@ -6341,8 +6426,18 @@ class ByeByeTickApp {
     this.renderVademecum();
     this.renderHistoryTable();
 
-    // Cargar Muestra 2 por defecto
+    // Cargar Muestra 2 por defecto y restaurar/precargar modelo ONNX guardado si existe
     this.loadPresetSample("sample_moderada");
+    this.restoreYoloModelSilently();
+  }
+
+  async restoreYoloModelSilently() {
+    try {
+      const ok = await this.visionEngine.tryAutoLoadYoloModel("./models/yolo26n-seg.onnx", false);
+      if (ok && this.visionEngine.yoloRunner.session) {
+        this.syncEngineButtonsUI(this.visionEngine.engineMode, this.visionEngine.yoloRunner.modelName);
+      }
+    } catch (e) {}
   }
 
   cacheDom() {
@@ -6390,6 +6485,7 @@ class ByeByeTickApp {
       engineModeBtns: document.querySelectorAll(".btn-vision-engine"),
       yoloModelInput: document.getElementById("yoloModelInput"),
       yoloStatusBadge: document.getElementById("yoloStatusBadge"),
+      simpleYoloStatusBadge: document.getElementById("simpleYoloStatusBadge"),
       coatBtns: document.querySelectorAll(".btn-coat"),
       sliderBinaryTh: document.getElementById("sliderBinaryTh"),
       valBinaryTh: document.getElementById("valBinaryTh"),
@@ -6606,17 +6702,11 @@ class ByeByeTickApp {
         btn.addEventListener("click", async () => {
           const targetEngine = btn.dataset.engine;
           if (targetEngine === "yolo26_seg" && !this.visionEngine.yoloRunner.session) {
-            if (this.dom.yoloStatusBadge) {
-              this.dom.yoloStatusBadge.textContent = "Buscando modelo...";
-            }
-            const loaded = await this.visionEngine.tryAutoLoadYoloModel("./models/yolo26n-seg.onnx");
+            this.setYoloBadgesUI("Cargando modelo...", "#e0f2fe", "#0369a1");
+            const loaded = await this.visionEngine.tryAutoLoadYoloModel("./models/yolo26n-seg.onnx", true);
             if (!loaded) {
-              if (this.dom.yoloStatusBadge) {
-                this.dom.yoloStatusBadge.textContent = "Carga tu .onnx";
-                this.dom.yoloStatusBadge.style.background = "#fef3c7";
-                this.dom.yoloStatusBadge.style.color = "#92400e";
-              }
-              alert("Aún no se encontró './models/yolo26n-seg.onnx' en el repositorio. Pulsa '📦 Cargar .onnx' para seleccionar tu modelo entrenado con train_yolo26_seg.py.");
+              this.setYoloBadgesUI("Carga tu .onnx", "#fef3c7", "#92400e");
+              alert("Aún no se encontró el modelo guardado ni './models/yolo26n-seg.onnx'. Pulsa '📦 Cargar .onnx' una sola vez y quedará guardado en tu navegador.");
               return;
             }
           }
@@ -6632,25 +6722,17 @@ class ByeByeTickApp {
       this.dom.yoloModelInput.addEventListener("change", async e => {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
-        if (this.dom.yoloStatusBadge) {
-          this.dom.yoloStatusBadge.textContent = "Cargando ONNX...";
-          this.dom.yoloStatusBadge.style.background = "#e0f2fe";
-          this.dom.yoloStatusBadge.style.color = "#0369a1";
-        }
+        this.setYoloBadgesUI("Guardando ONNX...", "#e0f2fe", "#0369a1");
         try {
           const buf = await file.arrayBuffer();
-          await this.visionEngine.yoloRunner.loadFromArrayBuffer(buf, file.name);
+          await this.visionEngine.yoloRunner.loadFromArrayBuffer(buf, file.name, true);
           this.syncEngineButtonsUI("yolo26_seg", file.name);
           if (this.currentImage) {
             await this.runFullAnalysis();
           }
         } catch (err) {
           console.error(err);
-          if (this.dom.yoloStatusBadge) {
-            this.dom.yoloStatusBadge.textContent = "Error ONNX";
-            this.dom.yoloStatusBadge.style.background = "#fee2e2";
-            this.dom.yoloStatusBadge.style.color = "#991b1b";
-          }
+          this.setYoloBadgesUI("Error ONNX", "#fee2e2", "#991b1b");
           alert("No se pudo iniciar el modelo ONNX: " + (err.message || err));
         } finally {
           e.target.value = "";
@@ -7198,7 +7280,8 @@ class ByeByeTickApp {
 
     if (this.dom.simpleTelemetryText) {
       const nivelTxt = count === 0 ? "Limpio (0 garrapatas)" : (grade === 1 ? "Nivel Leve" : (grade === 2 ? "Nivel Moderado" : "Nivel Severo"));
-      this.dom.simpleTelemetryText.textContent = `${count} GARRAPATAS DETECTADAS · ${nivelTxt.toUpperCase()}`;
+      const motorTxt = this.visionEngine.activeEngineLabel || "Contornos IA v5";
+      this.dom.simpleTelemetryText.textContent = `${count} GARRAPATAS DETECTADAS · ${nivelTxt.toUpperCase()} (${motorTxt.toUpperCase()})`;
     }
 
     let bgSem = "#dcfce7", borderSem = "#86efac", colorSem = "#166534", iconSem = "🟢";
@@ -7249,6 +7332,15 @@ class ByeByeTickApp {
     `;
   }
 
+  setYoloBadgesUI(text, bg, color) {
+    [this.dom.yoloStatusBadge, this.dom.simpleYoloStatusBadge].forEach(badge => {
+      if (!badge) return;
+      badge.textContent = text;
+      badge.style.background = bg;
+      badge.style.color = color;
+    });
+  }
+
   syncEngineButtonsUI(targetEngine, modelName = "") {
     this.visionEngine.engineMode = targetEngine;
     this.visionEngine.activeEngineLabel = targetEngine === "yolo26_seg" ? "YOLO26-Seg ONNX" : "Contornos IA v5";
@@ -7259,19 +7351,15 @@ class ByeByeTickApp {
       });
     }
 
-    if (this.dom.yoloStatusBadge) {
-      if (this.visionEngine.yoloRunner.session) {
-        const shortName = modelName || this.visionEngine.yoloRunner.modelName || "yolo26n-seg.onnx";
-        this.dom.yoloStatusBadge.textContent = targetEngine === "yolo26_seg"
-          ? `YOLO26 Activo: ${shortName}`
-          : `ONNX Listo: ${shortName}`;
-        this.dom.yoloStatusBadge.style.background = targetEngine === "yolo26_seg" ? "#dcfce7" : "#e0f2fe";
-        this.dom.yoloStatusBadge.style.color = targetEngine === "yolo26_seg" ? "#166534" : "#0369a1";
+    if (this.visionEngine.yoloRunner.session) {
+      const shortName = modelName || this.visionEngine.yoloRunner.modelName || "yolo26n-seg.onnx";
+      if (targetEngine === "yolo26_seg") {
+        this.setYoloBadgesUI(`YOLO26 Activo: ${shortName}`, "#dcfce7", "#166534");
       } else {
-        this.dom.yoloStatusBadge.textContent = "YOLO26: Sin .onnx";
-        this.dom.yoloStatusBadge.style.background = "#f1f5f9";
-        this.dom.yoloStatusBadge.style.color = "#475569";
+        this.setYoloBadgesUI(`ONNX Guardado: ${shortName}`, "#e0f2fe", "#0369a1");
       }
+    } else {
+      this.setYoloBadgesUI("YOLO26: Sin .onnx", "#f1f5f9", "#475569");
     }
   }
 
